@@ -19,7 +19,6 @@ Projekt zaliczeniowy (.NET 8) w architekturze **Clean Architecture** z trzema mo
 
 ## Uruchomienie
 
-```
 # 1) API (Swagger + GraphQL)
 dotnet run --project .\LibrarySystem.Presentation\LibrarySystem.Presentation.csproj
 # Swagger: https://localhost:7182/swagger
@@ -39,6 +38,6 @@ librarian / librarian123 (Librarian)
 
 Smoke script
 Uruchom w katalogu repo:
-powershell
+
 Set-ExecutionPolicy -Scope Process Bypass
 .\scripts\curl-smoke.ps1
