@@ -30,14 +30,14 @@ Projekt zaliczeniowy (.NET 8) w architekturze **Clean Architecture** z trzema mo
 - Panel: https://localhost:7113
 
 3) Testy
-   dotnet test
+- dotnet test
 
-Loginy demo
+- Loginy demo: 
   admin / admin123 (Admin)
   librarian / librarian123 (Librarian)
 
-Smoke script
-Uruchom w katalogu repo:
+- Smoke script
+  Uruchom w katalogu repo:
 
-Set-ExecutionPolicy -Scope Process Bypass
-.\scripts\curl-smoke.ps1
+- Set-ExecutionPolicy -Scope Process Bypass
+   .\scripts\curl-smoke.ps1
