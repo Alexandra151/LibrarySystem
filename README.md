@@ -19,7 +19,7 @@ Projekt zaliczeniowy (.NET 8) w architekturze **Clean Architecture** z trzema mo
 
 ## Uruchomienie
 
-```powershell
+```
 # 1) API (Swagger + GraphQL)
 dotnet run --project .\LibrarySystem.Presentation\LibrarySystem.Presentation.csproj
 # Swagger: https://localhost:7182/swagger
