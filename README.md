@@ -40,4 +40,4 @@ Projekt zaliczeniowy (.NET 8) w architekturze **Clean Architecture** z trzema mo
   Uruchom w katalogu repo:
 
 - Set-ExecutionPolicy -Scope Process Bypass
-   .\scripts\curl-smoke.ps1
+     .\scripts\curl-smoke.ps1
