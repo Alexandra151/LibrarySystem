@@ -19,17 +19,17 @@ Projekt zaliczeniowy (.NET 8) w architekturze **Clean Architecture** z trzema mo
 
 ## Uruchomienie
 
-# 1) API (Swagger + GraphQL)
+1) API (Swagger + GraphQL)
 dotnet run --project .\LibrarySystem.Presentation\LibrarySystem.Presentation.csproj
 # Swagger: https://localhost:7182/swagger
 # GraphQL: https://localhost:7182/graphql
 # Uwaga: dla /api/* wymagany nagłówek:  X-Client-Name: smoke
 
-# 2) Panel Razor Pages (admin)
+2) Panel Razor Pages (admin)
 dotnet run --project .\LibrarySystem.Web\LibrarySystem.Web.csproj
 # Panel: https://localhost:7113
 
-# 3) Testy
+3) Testy
 dotnet test
 
 Loginy demo
