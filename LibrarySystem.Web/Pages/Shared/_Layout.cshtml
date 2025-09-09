@@ -1,0 +1,159 @@
+﻿@using Microsoft.Extensions.Configuration
+@inject IConfiguration Config
+@{
+    // API base z konfiguracji; fallback do aktualnego hosta (gdy config pusty)
+    var configuredBase = (Config["Api:BaseUrl"] ?? "").Trim();
+    var apiBase = string.IsNullOrWhiteSpace(configuredBase)
+        ? $"{Context.Request.Scheme}://{Context.Request.Host}"
+        : configuredBase;
+    apiBase = apiBase.TrimEnd('/');
+}
+
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - LibrarySystem Admin</title>
+
+    <environment include="Development">
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet"
+              href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+              integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+              crossorigin="anonymous">
+    </environment>
+
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body class="d-flex flex-column min-vh-100">
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark border-bottom">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-page="/Index">📚 LibrarySystem Admin</a>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#topNav" aria-controls="topNav" aria-expanded="false"
+                        aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div id="topNav" class="collapse navbar-collapse">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+                        <li class="nav-item">
+                            <a class="nav-link" asp-page="/Index">Start</a>
+                        </li>
+
+                        <!-- Swagger / GraphQL (zewnętrzne API) -->
+                        <li class="nav-item">
+                            <a class="nav-link" href="@(apiBase)/swagger" target="_blank" rel="noopener noreferrer">Swagger</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="@(apiBase)/graphql" target="_blank" rel="noopener noreferrer">GraphQL</a>
+                        </li>
+
+                        <!-- REST API szybkie linki -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="apiDrop" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                REST API
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="apiDrop">
+                                <li><a class="dropdown-item" href="@(apiBase)/api/Authors" target="_blank" rel="noopener noreferrer">GET /api/Authors</a></li>
+                                <li><a class="dropdown-item" href="@(apiBase)/api/Books" target="_blank" rel="noopener noreferrer">GET /api/Books</a></li>
+                                <li><hr class="dropdown-divider" /></li>
+                                <li><a class="dropdown-item" href="@(apiBase)/swagger/v1/swagger.json" target="_blank" rel="noopener noreferrer">OpenAPI JSON</a></li>
+                            </ul>
+                        </li>
+
+                        <!-- Panele administracyjne (tylko Admin/Librarian) -->
+                        @if (User?.IsInRole("Admin") == true || User?.IsInRole("Librarian") == true)
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="adminDrop" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Admin
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="adminDrop">
+                                    <li><a class="dropdown-item" asp-page="/Admin/Authors">Authors (REST)</a></li>
+                                    <li><a class="dropdown-item" asp-page="/GraphQL/Books">Books (GraphQL)</a></li>
+                                </ul>
+                            </li>
+                        }
+
+                        <!-- Skrypty (uwaga: plik musi być serwowany z wwwroot/scripts) -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="scriptsDrop" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Skrypty
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="scriptsDrop">
+                                <li>
+                                    <a class="dropdown-item" href="~/scripts/curl-smoke.ps1" download>
+                                        Pobierz: scripts/curl-smoke.ps1
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                    <!-- Prawa strona: login/logout + zegar -->
+                    <ul class="navbar-nav ms-auto">
+                        @if (User?.Identity?.IsAuthenticated ?? false)
+                        {
+                            <li class="nav-item">
+                                <span class="nav-link disabled">Witaj, @User.Identity!.Name</span>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-page="/Account/Logout">Wyloguj</a>
+                                @* jeśli zmienisz Logout na POST:
+                            <form class="d-inline" method="post" asp-page="/Account/Logout">
+                                <button class="nav-link btn btn-link p-0 text-decoration-none">Wyloguj</button>
+                            </form>
+                            *@
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-page="/Account/Login">Zaloguj</a>
+                            </li>
+                        }
+                        <li class="nav-item">
+                            <span class="navbar-text small text-light opacity-75">
+                                @DateTime.Now:dd.MM.yyyy HH:mm
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container my-4 flex-grow-1">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top py-3 mt-auto">
+        <div class="container d-flex justify-content-between">
+            <span class="text-muted">&copy; @DateTime.Now.Year – LibrarySystem</span>
+            <span class="text-muted">
+                <a asp-page="/Privacy" class="text-decoration-none">Polityka prywatności</a>
+            </span>
+        </div>
+    </footer>
+
+    <environment include="Development">
+        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+                integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+                crossorigin="anonymous"></script>
+    </environment>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

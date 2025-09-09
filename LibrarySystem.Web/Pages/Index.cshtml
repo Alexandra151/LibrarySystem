@@ -1,0 +1,60 @@
+﻿@page
+@model IndexModel
+@inject IConfiguration Config
+
+@{
+    var apiBase = Config["Api:BaseUrl"] ?? "https://localhost:7182";
+    var swagger = Config["Api:SwaggerUrl"] ?? $"{apiBase}/swagger";
+    var graphQl = Config["Api:GraphQlUrl"] ?? $"{apiBase}/graphql";
+    var openApi = Config["Api:OpenApiJson"] ?? $"{apiBase}/swagger/v1/swagger.json";
+
+    var apiAuthors = $"{apiBase}/api/Authors";
+    var apiBooks = $"{apiBase}/api/Books";
+}
+
+<div class="container my-4">
+    <h1 class="mb-4">LibrarySystem Admin</h1>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <h4 class="card-title">REST API</h4>
+            <p class="card-text">
+                CRUD na encjach <strong>Authors</strong>, <strong>Books</strong> i <strong>Loans</strong>.
+                Uwierzytelnianie <strong>JWT</strong>, middleware nagłówków, InMemory EF.
+            </p>
+
+            <a class="btn btn-primary mb-3" href="@swagger" target="_blank" rel="noopener">
+                Otwórz Swagger
+            </a>
+
+            <div class="d-flex gap-2">
+                <a class="btn btn-outline-secondary" href="@apiAuthors" target="_blank" rel="noopener">
+                    GET /api/Authors
+                </a>
+                <a class="btn btn-outline-secondary" href="@apiBooks" target="_blank" rel="noopener">
+                    GET /api/Books
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <h4 class="card-title">GraphQL</h4>
+            <p class="card-text">
+                HotChocolate, Query: <code>books</code>, <code>authors</code>, <code>loans</code> z projekcjami, filtrowaniem i sortowaniem.
+                Wbudowany explorer Banana Cake Pop.
+            </p>
+            <a class="btn btn-info" href="@graphQl" target="_blank" rel="noopener">Otwórz /graphql</a>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">OpenAPI JSON</h4>
+            <a class="btn btn-outline-dark" href="@openApi" target="_blank" rel="noopener">
+                /swagger/v1/swagger.json
+            </a>
+        </div>
+    </div>
+</div>

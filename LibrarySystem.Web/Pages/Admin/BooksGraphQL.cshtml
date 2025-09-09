@@ -1,0 +1,22 @@
+﻿@page
+@model LibrarySystem.Web.Pages.Admin.BooksGraphQLModel
+@{
+    ViewData["Title"] = "Books (GraphQL)";
+}
+<h1>Books (GraphQL)</h1>
+
+<table class="table">
+    <thead><tr><th>Id</th><th>Title</th><th>AuthorId</th><th>Total</th><th>Avail</th></tr></thead>
+    <tbody>
+        @foreach (var b in Model.Books)
+        {
+            <tr>
+                <td>@b.Id</td>
+                <td>@b.Title</td>
+                <td>@b.AuthorId</td>
+                <td>@b.CopiesTotal</td>
+                <td>@b.CopiesAvailable</td>
+            </tr>
+        }
+    </tbody>
+</table>

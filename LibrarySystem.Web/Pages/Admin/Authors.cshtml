@@ -1,0 +1,31 @@
+﻿@page
+@model LibrarySystem.Web.Pages.Admin.AuthorsModel
+@{
+    ViewData["Title"] = "Autorzy (Admin/Librarian)";
+}
+
+<h2>Autorzy</h2>
+
+<form method="post" class="row g-2 mb-3">
+    <div class="col-auto">
+        <input asp-for="NewAuthor.Name" class="form-control" placeholder="Nowy autor" />
+    </div>
+    <div class="col-auto">
+        <button class="btn btn-primary">Dodaj</button>
+    </div>
+    <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+</form>
+
+<table class="table table-sm table-striped">
+    <thead><tr><th>Id</th><th>Nazwa</th></tr></thead>
+    <tbody>
+        @foreach (var a in Model.Items)
+        {
+            <tr><td>@a.Id</td><td>@a.Name</td></tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
